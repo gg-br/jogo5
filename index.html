@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background-color: rgb(43, 43, 43);
+        }
+    </style>
+</head>
+<body>
+    <canvas>
+
+    </canvas>
+    <script>
+           //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+         class Sprite {
+            constructor({ position, dimensions}){
+                this.position = position
+                this.width = dimensions.width
+                this.height = dimensions.height
+            }
+
+            draw() {
+                ctx.fillStyle = "white"
+                ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+            }
+        }
+
+        const player = new Sprite({
+            position: {
+                x:100,
+                y:100
+            },
+            dimensions: {
+                width: 50,
+                height: 150
+            }
+        })
+         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        const canvas = document.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const canvasLARGURA = 1024;
+        const canvasALTURA = 576;
+
+        canvas.width = canvasLARGURA;
+        canvas.height = canvasALTURA;
+
+        animate()
+        function animate(){
+            window.requestAnimationFrame(animate)
+
+            ctx.fillStyle = "black"
+            ctx.fillRect(0,0,canvasLARGURA,canvasALTURA)
+
+            player.draw()
+        }
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    </script>
+</body>
+</html>
