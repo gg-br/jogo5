@@ -35,8 +35,18 @@
             draw() {
                 ctx.fillStyle = "white"
                 ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+
+                if(this.isAtking){
+                    ctx.fillStyle = "red"
+                    ctx.fillRect(this.atkBox.position.x, this.atkBox.position.y, this.atkBox.width, this.atkBox.height)
+                }
             }
             update(){
+                if (Math.ceil(this.position.y+this.height >= canvas.height)){
+                    this.onGround = true
+                } else {
+                    this.onGround = false
+                }
 
                 if (this.position.y+this.height > canvas.height){
                     this.position.y = canvas.height-this.height
@@ -48,8 +58,27 @@
                 this.position.x += this.velocity.x
                 this.position.y += this.velocity.y
 
+                this.atkBox.position.x = this.position.x
+                this.atkBox.position.y = this.position.y
+
                 this.draw()
             }
+
+            atk(){
+                if (this.onAtkingCD) return
+
+                this.isAtking = true
+
+                setTimeout(() => {
+                    this.isAtking = false
+                }, 100)
+            }
+
+            jump(){
+                if (!this.onGround) return
+                this.velocity.y -= 6
+            }
+
         }
 
         class Fighter extends Sprite{
@@ -66,6 +95,21 @@
                 this.velocity = velocity
                 this.width = dimensions.width
                 this.height = dimensions.height
+
+                this.atkBox = {
+                    position: {
+                        x: this.position.x,
+                        y: this.position.y,
+                    },
+                    width: 125,
+                    height: 50
+                }
+
+                this.isAtking
+                this.atkCD = 500
+                this.onAtkingCD
+
+                this.onGround
             }
         }
 
@@ -95,7 +139,8 @@
                 pressed: false
             },
             space:{
-                pressed: false
+                pressed: false,
+                hold: false
             },
         }
 
@@ -132,11 +177,16 @@
                 case "w":
                     keys.w.pressed = false
                     break
+                case " ":
+                    keys.space.pressed = false
+                    keys.space.hold = false
+                    break
             }
         })
 
         function handControls(){
             movement()
+            atks()
 
             function movement(){
                 player.velocity.x = 0
@@ -148,8 +198,16 @@
                     player.velocity.x = 1.5 * 3.4
                 }
                 if (keys.w.pressed){
-                    player.velocity.y = -10
+                   player.jump()
                 }
+            }
+
+            function atks(){
+                if (keys.space.pressed && !keys.space.hold){
+                    player.atk()
+                    keys.space.hold = true
+                }
+           
             }
         }
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ GAME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
