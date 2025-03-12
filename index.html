@@ -21,10 +21,13 @@
 
     </canvas>
     <script>
-           //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+           //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ SPRITS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        const gravity = 0.6
+
          class Sprite {
-            constructor({ position, dimensions}){
+            constructor({ position, velocity, dimensions}){
                 this.position = position
+                this.velocity = velocity
                 this.width = dimensions.width
                 this.height = dimensions.height
             }
@@ -33,6 +36,19 @@
                 ctx.fillStyle = "white"
                 ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
             }
+            update(){
+
+                if (this.position.y+this.height >= canvas.height){
+                    this.velocity.y = canvas.height - (this.position.y+this.height)
+                } else{
+                    this.velocity.y += gravity
+                }
+
+                this.position.x += this.velocity.x
+                this.position.y += this.velocity.y
+
+                this.draw()
+            }
         }
 
         const player = new Sprite({
@@ -40,12 +56,16 @@
                 x:100,
                 y:100
             },
+            velocity:{
+                x: 0,
+                y: 2
+            } ,
             dimensions: {
                 width: 50,
                 height: 150
             }
         })
-         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ GAME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         const canvas = document.querySelector('canvas');
         const ctx = canvas.getContext('2d');
 
@@ -62,7 +82,7 @@
             ctx.fillStyle = "black"
             ctx.fillRect(0,0,canvasLARGURA,canvasALTURA)
 
-            player.draw()
+            player.update()
         }
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     </script>
