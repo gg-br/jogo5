@@ -12,6 +12,7 @@
         }
 
         body{
+        
             background-color: rgb(43, 43, 43);
         }
     </style>
@@ -23,18 +24,37 @@
     <script>
            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ SPRITS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         const gravity = 0.6
+        const backGround1 = "fundo.png"
 
          class Sprite {
-            constructor({ position, velocity, dimensions}){
+            constructor({ position, velocity, dimensions, source}){
                 this.position = position
                 this.velocity = velocity
-                this.width = dimensions.width
-                this.height = dimensions.height
+                this.width = dimensions?.width
+                this.height = dimensions?.height
+
+                if (source){
+                    this.image = new Image()
+                    this.image.src = source
+
+                    this.width = this.image.width
+                    this.height = this.image.height
+                }
             }
 
             draw() {
-                ctx.fillStyle = "white"
-                ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+                if (this.image){
+                    ctx.drawImage(
+                        this.image,
+                        this.position.x,
+                        this.position.y,
+                        this.width,
+                        this.height
+                    )
+                } else {
+                    ctx.fillStyle = "white"
+                    ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+                }
 
                 if(this.isAtking){
                     ctx.fillStyle = "red"
@@ -131,6 +151,14 @@
                 width: 50,
                 height: 150
             }
+        })
+
+        const background = new Sprite({
+            position:{
+                x:0,
+                y:0
+            },
+            source: backGround1
         })
           //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ CONTROLS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
          const keys = {
@@ -234,6 +262,7 @@
             ctx.fillStyle = "black"
             ctx.fillRect(0,0,canvasLARGURA,canvasALTURA)
 
+            background.update()
             player.update()
         }
     </script>
