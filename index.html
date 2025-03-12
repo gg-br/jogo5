@@ -24,6 +24,7 @@
     <script>
            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ SPRITS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         const gravity = 0.6
+        const chao = 100
         const backGround1 = "fundo.png"
 
          class Sprite {
@@ -60,6 +61,43 @@
                     ctx.fillStyle = "red"
                     ctx.fillRect(this.atkBox.position.x, this.atkBox.position.y, this.atkBox.width, this.atkBox.height)
                 }
+            }
+
+            update(){
+                this.draw()
+            }
+            
+        }
+
+        class Fighter extends Sprite{
+            constructor({
+                position,
+                velocity,
+                dimensions
+            }) {
+                super({
+                    position,
+                    velocity,
+                    dimensions
+                })
+                this.velocity = velocity
+                this.width = dimensions.width
+                this.height = dimensions.height
+
+                this.atkBox = {
+                    position: {
+                        x: this.position.x,
+                        y: this.position.y,
+                    },
+                    width: 125,
+                    height: 50
+                }
+
+                this.isAtking
+                this.atkCD = 200
+                this.onAtkingCD
+
+                this.onGround
             }
             update(){
                 if (Math.ceil(this.position.y+this.height) >= canvas.height){
@@ -103,44 +141,11 @@
                 if (!this.onGround) return
                 this.velocity.y -= 6
             }
-
-        }
-
-        class Fighter extends Sprite{
-            constructor({
-                position,
-                velocity,
-                dimensions
-            }) {
-                super({
-                    position,
-                    velocity,
-                    dimensions
-                })
-                this.velocity = velocity
-                this.width = dimensions.width
-                this.height = dimensions.height
-
-                this.atkBox = {
-                    position: {
-                        x: this.position.x,
-                        y: this.position.y,
-                    },
-                    width: 125,
-                    height: 50
-                }
-
-                this.isAtking
-                this.atkCD = 200
-                this.onAtkingCD
-
-                this.onGround
-            }
         }
 
         const player = new Fighter({
             position: {
-                x:100,
+                x:50,
                 y:100
             },
             velocity:{
@@ -261,8 +266,8 @@
 
             ctx.fillStyle = "black"
             ctx.fillRect(0,0,canvasLARGURA,canvasALTURA)
-
-            background.draw()
+            
+            background.update()
             player.update()
         }
     </script>
