@@ -68,10 +68,15 @@
                 if (this.onAtkingCD) return
 
                 this.isAtking = true
+                this.onAtkingCD = true
 
                 setTimeout(() => {
                     this.isAtking = false
                 }, 100)
+
+                setTimeout(() => {
+                   this.onAtkingCD = false 
+                }, this.atkCD);
             }
 
             jump(){
